@@ -6,6 +6,11 @@ import {
   buildFallbackSections,
   buildProtocolText,
 } from "../lib/protocol";
+import {
+  buildFullProtocolExport,
+  buildResultExport,
+  downloadText,
+} from "../lib/resultExport";
 import type { ActionItem, MeetingResult, ResultTab } from "../types";
 import styles from "./Results.module.css";
 
@@ -18,6 +23,8 @@ export function Results({ result }: { result: MeetingResult }) {
       : buildFallbackSections(result);
   const protocolText = buildProtocolText(result, sections);
   const tabs = buildTabs(result, sections.length);
+  const activeExport = buildResultExport(result, sections, activeTab);
+  const fullExport = buildFullProtocolExport(result, sections);
 
   async function copyProtocol() {
     await navigator.clipboard.writeText(protocolText);
@@ -43,17 +50,17 @@ export function Results({ result }: { result: MeetingResult }) {
           </button>
           <button
             type="button"
-            onClick={() => downloadText(`${result.fileName}.md`, protocolText)}
+            onClick={() => downloadText(activeExport.fileName, activeExport.text)}
           >
             <Download size={16} strokeWidth={2.2} />
-            .md
+            {activeExport.label}
           </button>
           <button
             type="button"
-            onClick={() => downloadText(`${result.fileName}.txt`, result.transcript)}
+            onClick={() => downloadText(fullExport.fileName, fullExport.text)}
           >
             <Download size={16} strokeWidth={2.2} />
-            .txt
+            Полный протокол .md
           </button>
         </div>
       </div>
@@ -201,13 +208,4 @@ function buildTabs(result: MeetingResult, sectionsCount: number) {
     },
     { id: "transcript" as const, label: "Транскрипция", count: 0 },
   ];
-}
-
-function downloadText(fileName: string, text: string) {
-  const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  URL.revokeObjectURL(url);
 }
