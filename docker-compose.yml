@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        WHISPER_CPP_REF: ${WHISPER_CPP_REF:-master}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      AI_BASE_URL: ${AI_BASE_URL:-http://host.docker.internal:11434/v1}
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-qwen3.5-122b}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+      SUMMARY_CHUNK_CHARS: ${SUMMARY_CHUNK_CHARS:-12000}
+      WHISPER_CPP_MODEL: /app/models/ggml-base.bin
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./models:/app/models:ro
