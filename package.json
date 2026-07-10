@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "changelog": "node scripts/generate-changelog.mjs",
     "lint": "eslint",
+    "release:major": "node scripts/generate-changelog.mjs --bump major",
+    "release:minor": "node scripts/generate-changelog.mjs --bump minor",
+    "release:patch": "node scripts/generate-changelog.mjs --bump patch",
     "test": "tsc -p tsconfig.test.json && node --test .tmp/test-build/tests/**/*.test.js"
   },
   "dependencies": {

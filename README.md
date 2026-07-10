@@ -123,6 +123,44 @@ test -f models/ggml-base.bin
 
 Если меняете `.env.local`, перезапустите `npm run dev`.
 
+Также доступна HTTP-проверка окружения:
+
+```bash
+curl http://localhost:3000/api/health
+```
+
+Endpoint проверяет `ffmpeg`, `whisper-cli`, файл Whisper-модели и доступность chat model endpoint через `${AI_BASE_URL}/models`.
+
+## Проверки кода
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+Unit-тесты запускаются через встроенный `node:test` без отдельного test runner. Временная сборка тестов пишется в `.tmp/test-build`.
+
+## Журнал изменений и версии
+
+`CHANGELOG.md` ведётся на русском языке и генерируется из git-коммитов.
+
+Обновить changelog для текущей версии из `package.json`:
+
+```bash
+npm run changelog
+```
+
+Поднять версию и обновить changelog:
+
+```bash
+npm run release:patch
+npm run release:minor
+npm run release:major
+```
+
+Скрипты `release:*` обновляют `package.json`, `package-lock.json` и добавляют/перегенерируют секцию в `CHANGELOG.md`. Для хорошей группировки используйте conventional commits, например `feat: ...`, `fix: ...`, `test: ...`, `docs: ...`.
+
 ## Ограничения MVP
 
 - обработка длинных записей может занять много времени;
