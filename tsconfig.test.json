@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "incremental": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".tmp/test-build",
+    "rootDir": ".",
+    "tsBuildInfoFile": ".tmp/test.tsbuildinfo"
+  },
+  "include": [
+    "src/app/types.ts",
+    "src/app/lib/protocol.ts",
+    "src/app/lib/streamEventParser.ts",
+    "src/app/api/meetings/transcribe/lib/chunkTranscript.ts",
+    "src/app/api/meetings/transcribe/lib/common.ts",
+    "src/app/api/meetings/transcribe/lib/normalizeSummary.ts",
+    "src/app/api/meetings/transcribe/lib/types.ts",
+    "tests/**/*.ts"
+  ]
+}
