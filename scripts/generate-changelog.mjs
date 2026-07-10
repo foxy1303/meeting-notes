@@ -4,6 +4,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 const CHANGELOG_PATH = "CHANGELOG.md";
 const PACKAGE_PATH = "package.json";
 const PACKAGE_LOCK_PATH = "package-lock.json";
+const CHANGELOG_TITLE = "# История изменений";
+const CHANGELOG_DESCRIPTION =
+  "Все значимые изменения проекта формируются из git-коммитов.";
 
 const categories = [
   ["feat", "Добавлено"],
@@ -124,14 +127,21 @@ function parseSubject(subject) {
 function writeChangelog(version, releaseDate, commits) {
   const previous = readFile(CHANGELOG_PATH);
   const body = buildReleaseSection(version, releaseDate, commits);
-  const header =
-    "# Журнал изменений\n\n" +
-    "Все значимые изменения проекта формируются из git-коммитов.\n\n";
-  const content = previous.startsWith("# Журнал изменений")
-    ? replaceOrPrependRelease(previous, version, body)
-    : `${header}${body}`;
+  const releases = latestTag
+    ? removeReleaseSection(normalizeChangelog(previous), version)
+    : "";
+  const content = [
+    CHANGELOG_TITLE,
+    "",
+    CHANGELOG_DESCRIPTION,
+    "",
+    body.trimEnd(),
+    releases,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 
-  writeFileSync(CHANGELOG_PATH, content);
+  writeFileSync(CHANGELOG_PATH, `${content.trimEnd()}\n`);
 }
 
 function buildReleaseSection(version, releaseDate, commits) {
@@ -185,28 +195,40 @@ function translateDescription(description) {
   const translations = {
     "Initial commit from Create Next App": "начальный проект Create Next App",
     "add contextual result exports": "добавлено контекстное скачивание результатов",
+    "add russian changelog tooling": "добавлена генерация русскоязычной истории изменений",
     "add transcription ui": "добавлен интерфейс транскрипции",
     "cover transcription helpers": "добавлены тесты helper-функций транскрипции",
     "harden transcription backend": "усилена серверная обработка транскрипции",
+    "persist last transcription result": "сохранение последнего результата транскрипции",
     "refine transcription interface": "улучшен интерфейс транскрипции",
   };
 
   return translations[description] || description;
 }
 
-function replaceOrPrependRelease(content, version, section) {
-  const releasePattern = new RegExp(
-    `## ${escapeRegExp(version)} - \\d{4}-\\d{2}-\\d{2}[\\s\\S]*?(?=\\n## |$)`,
-  );
+function normalizeChangelog(content) {
+  const trimmed = content.trim();
 
-  if (releasePattern.test(content)) {
-    return content.replace(releasePattern, section.trimEnd());
+  if (!trimmed) {
+    return "";
   }
 
-  return content.replace(
-    /^(# Журнал изменений\n\n(?:.*\n\n)?)/,
-    `$1${section}`,
+  const firstReleaseIndex = trimmed.search(/^## /m);
+
+  if (firstReleaseIndex === -1) {
+    return "";
+  }
+
+  return trimmed.slice(firstReleaseIndex).trim();
+}
+
+function removeReleaseSection(content, version) {
+  const releasePattern = new RegExp(
+    `## ${escapeRegExp(version)} - \\d{4}-\\d{2}-\\d{2}[\\s\\S]*?(?=\\n## |$)`,
+    "g",
   );
+
+  return content.replace(releasePattern, "").trim();
 }
 
 function updatePackageVersions(version) {
