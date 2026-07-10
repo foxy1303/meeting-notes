@@ -4,15 +4,24 @@ services:
       context: .
       args:
         WHISPER_CPP_REF: ${WHISPER_CPP_REF:-master}
+    image: ${COMPOSE_PROJECT_NAME:-my-transcription}:latest
+    restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
     environment:
       AI_BASE_URL: ${AI_BASE_URL:-http://host.docker.internal:11434/v1}
       AI_API_KEY: ${AI_API_KEY:-}
-      AI_MODEL: ${AI_MODEL:-qwen3.5-122b}
+      AI_MODEL: ${AI_MODEL:-your-chat-model}
       MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+      MAX_ACTIVE_TRANSCRIPTIONS: ${MAX_ACTIVE_TRANSCRIPTIONS:-1}
       SUMMARY_CHUNK_CHARS: ${SUMMARY_CHUNK_CHARS:-12000}
       WHISPER_CPP_MODEL: /app/models/ggml-base.bin
+    healthcheck:
+      test: node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

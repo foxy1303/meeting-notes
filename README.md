@@ -7,7 +7,7 @@ Next.js приложение для обработки записей совещ
 - загрузка аудио или видеофайла с записью;
 - конвертация аудио через `ffmpeg`;
 - транскрипция через `whisper.cpp`;
-- сводка встречи через `AI_BASE_URL`/`AI_MODEL` или fallback на `~/.config/opencode/opencode.json`;
+- сводка встречи через `AI_BASE_URL`/`AI_MODEL` или fallback на пользовательский openCode-конфиг;
 - выделение ключевых пунктов, решений, задач, открытых вопросов и рисков;
 - вывод полной транскрипции на той же странице.
 
@@ -44,23 +44,25 @@ curl -L https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin 
 
 ## Настройка
 
-Создайте `.env.local` на основе примера:
+В репозиторий коммитится только обезличенный шаблон `.env.local.example`.
+
+Для локального запуска через `npm run dev` создайте `.env.local`:
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-Текущая рабочая конфигурация:
+Пример локальной конфигурации:
 
 ```bash
 FFMPEG_BIN=/opt/homebrew/bin/ffmpeg
 WHISPER_CPP_BIN=/opt/homebrew/bin/whisper-cli
-WHISPER_CPP_MODEL=/Users/foxxy/Documents/projects/my-transcription/models/ggml-base.bin
+WHISPER_CPP_MODEL=/absolute/path/to/project/models/ggml-base.bin
 MAX_UPLOAD_MB=200
 
 AI_BASE_URL=http://localhost:11434/v1
 AI_API_KEY=
-AI_MODEL=qwen3.5-122b
+AI_MODEL=your-chat-model
 SUMMARY_CHUNK_CHARS=12000
 ```
 
@@ -69,19 +71,16 @@ SUMMARY_CHUNK_CHARS=12000
 Если `AI_BASE_URL` и `AI_MODEL` не указаны, приложение попробует прочитать старый openCode-конфиг:
 
 ```bash
-OPENCODE_CONFIG_PATH=/Users/foxxy/.config/opencode/opencode.json
-OPENCODE_PROVIDER=llm-bridge
-OPENCODE_MODEL=smart-fast
+OPENCODE_CONFIG_PATH=/path/to/opencode.json
+OPENCODE_PROVIDER=your-provider
+OPENCODE_MODEL=your-model
 ```
 
-Для вашего текущего openCode-конфига доступны:
-
-- `OPENCODE_PROVIDER=llm-bridge`, модели `smart`, `smart-fast`;
-- `OPENCODE_PROVIDER=home`, модель `qwen3.5-122b`.
+Значения `OPENCODE_PROVIDER` и `OPENCODE_MODEL` зависят от вашего локального openCode-конфига.
 
 Секретный ключ остаётся в openCode-конфиге и не нужен в репозитории.
 
-При конфигурации через `AI_API_KEY` секрет также держите только в `.env.local` или Docker env, не коммитьте его в репозиторий.
+При конфигурации через `AI_API_KEY` секрет также держите только в локальных `.env.local` или `.env`, не коммитьте его в репозиторий.
 
 ## Запуск приложения
 
@@ -91,7 +90,7 @@ npm run dev
 
 Откройте [http://localhost:3000](http://localhost:3000).
 
-## Запуск в Docker
+## Запуск в Docker для стенда
 
 Положите модель Whisper в `models/ggml-base.bin`. Она подключается в контейнер как volume и не попадает в Docker image.
 
@@ -99,17 +98,53 @@ npm run dev
 
 ```bash
 AI_BASE_URL=http://host.docker.internal:11434/v1
-AI_MODEL=qwen3.5-122b
+AI_MODEL=your-chat-model
 AI_API_KEY=
 ```
 
-Запуск:
+Для Docker Compose нужен локальный `.env`, потому что Compose автоматически читает именно этот файл для подстановки переменных:
 
 ```bash
-docker compose up --build
+cp .env.local.example .env
 ```
 
-Откройте [http://localhost:3000](http://localhost:3000).
+Для стенда укажите в `.env` реальные значения `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`, при необходимости `APP_PORT` и `MAX_ACTIVE_TRANSCRIPTIONS`.
+
+Сборка и запуск:
+
+```bash
+docker compose up -d --build app
+```
+
+Откройте `http://localhost:${APP_PORT:-3000}`.
+
+Проверка:
+
+```bash
+docker compose ps
+curl http://localhost:${APP_PORT:-3000}/api/health
+```
+
+Обновление стенда после изменений:
+
+```bash
+git pull
+docker compose up -d --build app
+```
+
+Сборка использует BuildKit cache для `npm` и `apt`. На современных Docker он включён по умолчанию; если на стенде старый Docker, запускайте так:
+
+```bash
+DOCKER_BUILDKIT=1 docker compose up -d --build app
+```
+
+Первый build всё равно скачивает `ffmpeg`, toolchain и компилирует `whisper.cpp`. Последующие сборки должны переиспользовать эти слои, если не менялись `package-lock.json`, `Dockerfile` или `WHISPER_CPP_REF`.
+
+Посмотреть логи:
+
+```bash
+docker compose logs -f app
+```
 
 Если нейронка запускается отдельным сервисом в том же `docker-compose.yml`, замените `AI_BASE_URL` на адрес сервиса внутри compose-сети, например `http://neural:8000/v1`.
 
