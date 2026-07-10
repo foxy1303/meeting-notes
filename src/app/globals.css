@@ -1,6 +1,23 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-page: #f3f5f8;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f8fafc;
+  --color-border: #d8dee8;
+  --color-border-strong: #c8d1de;
+  --color-text: #172033;
+  --color-text-muted: #657184;
+  --color-text-soft: #687486;
+  --color-primary: #3154c9;
+  --color-primary-hover: #2745aa;
+  --color-danger: #9b2020;
+  --color-danger-bg: #fff4f4;
+  --color-danger-border: #f0b8b8;
+  --radius-panel: 8px;
+  --shadow-panel: 0 16px 42px rgba(19, 31, 53, 0.06);
+  --space-page: 28px;
+  --space-panel: 18px;
+  --background: var(--color-surface);
+  --foreground: var(--color-text);
 }
 
 html {

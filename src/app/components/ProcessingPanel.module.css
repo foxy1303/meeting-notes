@@ -1,0 +1,125 @@
+.processingPanel {
+  display: grid;
+  gap: 14px;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panelHeader h2 {
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.panelHeader p {
+  margin-top: 4px;
+  color: #687486;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: #aab4c3;
+}
+
+.statusDotActive {
+  background: #23a05a;
+  box-shadow: 0 0 0 6px rgba(35, 160, 90, 0.12);
+}
+
+.processingSteps {
+  display: grid;
+  gap: 4px;
+  list-style: none;
+}
+
+.processingSteps li {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  border-radius: 8px;
+  color: #5e6a7d;
+  font-size: 14px;
+  font-weight: 680;
+  padding: 4px 6px;
+}
+
+.stepIcon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #d3dae5;
+  border-radius: 999px;
+  color: #667388;
+}
+
+.stepLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.elapsed {
+  border: 1px solid #d3dae5;
+  border-radius: 999px;
+  color: #667388;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  padding: 3px 8px;
+}
+
+.processingStepActive {
+  color: #172033;
+  background: #f7f9ff;
+}
+
+.processingStepActive .stepIcon {
+  border-color: #3154c9;
+  background: #eef3ff;
+  color: #3154c9;
+}
+
+.processingStepActive .stepIcon svg {
+  animation: spin 1s linear infinite;
+}
+
+.processingStepDone {
+  color: #25334a;
+}
+
+.processingStepDone .stepIcon {
+  border-color: #23a05a;
+  background: #eaf8f0;
+  color: #168048;
+}
+
+.processingNote {
+  border-top: 1px solid #edf1f5;
+  padding-top: 12px;
+  color: #687486;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

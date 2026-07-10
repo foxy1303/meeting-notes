@@ -1,0 +1,264 @@
+.results {
+  display: grid;
+  gap: 16px;
+}
+
+.resultHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  padding: var(--space-panel);
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resultHeader h2 {
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.resultToolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.resultToolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  color: #25334a;
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 740;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: #eef2f7;
+  padding: 4px;
+}
+
+.tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  padding: 0 12px;
+  font: inherit;
+  font-weight: 740;
+  cursor: pointer;
+}
+
+.tabs .tabActive {
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgba(19, 31, 53, 0.08);
+  color: var(--color-text);
+}
+
+.tabs b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #dfe7f4;
+  color: #41506a;
+  font-size: 12px;
+}
+
+.tabActive b {
+  background: #eef3ff;
+  color: var(--color-primary);
+}
+
+.summaryBlock,
+.transcriptBlock,
+.card,
+.fullSummary {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  padding: var(--space-panel);
+}
+
+.summaryBlock h3,
+.transcriptBlock h3,
+.card h3,
+.fullSummary h3 {
+  font-size: 18px;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.summaryBlock p,
+.card li,
+.muted {
+  color: #48576d;
+  line-height: 1.6;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.summaryBlock {
+  grid-column: 1 / -1;
+}
+
+.fullSummary {
+  display: grid;
+  gap: 18px;
+}
+
+.summarySection {
+  display: grid;
+  gap: 10px;
+}
+
+.summarySection h4 {
+  color: #172033;
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.summarySection ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 20px;
+}
+
+.summarySection li {
+  color: #35445a;
+  line-height: 1.65;
+}
+
+.card ul {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.card li span {
+  display: block;
+  color: #718098;
+  font-size: 14px;
+  margin-top: 3px;
+}
+
+.taskList {
+  padding-left: 0;
+  list-style: none;
+}
+
+.taskList li {
+  display: grid;
+  gap: 8px;
+  border: 1px solid #edf1f5;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.taskList li strong {
+  color: #2d3b51;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.taskMeta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.taskMeta em {
+  border: 1px solid #d7dee9;
+  border-radius: 999px;
+  color: #536076;
+  font-size: 12px;
+  font-style: normal;
+  padding: 3px 8px;
+}
+
+.transcriptBlock pre {
+  max-height: 560px;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: #2d3b51;
+  background: #f7f9fc;
+  border-radius: 8px;
+  padding: 16px;
+  line-height: 1.65;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 14px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resultToolbar button:hover {
+    border-color: #8797ae;
+    background: #f8fafc;
+  }
+
+  .tabs button:hover {
+    color: #172033;
+  }
+}
+
+@media (max-width: 860px) {
+  .resultGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .resultHeader {
+    display: grid;
+  }
+
+  .resultToolbar,
+  .resultToolbar button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .resultHeader,
+  .summaryBlock,
+  .transcriptBlock,
+  .card,
+  .fullSummary {
+    padding: 14px;
+  }
+}
