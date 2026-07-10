@@ -40,7 +40,7 @@ function isStreamEvent(value: unknown): value is TranscriptionStreamEvent {
   return value.type === "result" && isMeetingResult(value.payload);
 }
 
-function isMeetingResult(value: unknown): value is MeetingResult {
+export function isMeetingResult(value: unknown): value is MeetingResult {
   if (!isRecord(value)) {
     return false;
   }

@@ -10,6 +10,11 @@ import {
   useState,
 } from "react";
 import type { MeetingResult, ProcessingStage } from "../types";
+import {
+  clearLastResult,
+  readLastResult,
+  saveLastResult,
+} from "./lastResultStorage";
 import { readTranscriptionResponse } from "./readTranscriptionResponse";
 
 const formatter = new Intl.NumberFormat("ru-RU", {
@@ -44,7 +49,16 @@ export function useMeetingTranscription() {
   }, [file]);
 
   useEffect(() => {
+    const restoreTimer = window.setTimeout(() => {
+      const lastResult = readLastResult();
+
+      if (lastResult) {
+        setResult(lastResult);
+      }
+    }, 0);
+
     return () => {
+      window.clearTimeout(restoreTimer);
       abortControllerRef.current?.abort();
 
       if (previewUrlRef.current) {
@@ -106,6 +120,7 @@ export function useMeetingTranscription() {
         setProcessingMessage(progress.message);
       });
 
+      saveLastResult(payload);
       setResult(payload);
     } catch (requestError) {
       if (abortController.signal.aborted) {
@@ -142,6 +157,7 @@ export function useMeetingTranscription() {
     setPreviewUrl("");
     setResult(null);
     setError("");
+    clearLastResult();
     resetProcessing();
     revokePreviewUrl();
 
