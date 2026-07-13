@@ -1,0 +1,360 @@
+.mapPanel {
+  display: grid;
+  gap: 12px;
+  min-height: 320px;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.fullscreen {
+  min-height: 100dvh;
+  height: 100dvh;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.mapViewport {
+  position: relative;
+  min-height: 260px;
+  height: 100%;
+  width: 100%;
+}
+
+.mapContainer {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: #e8edf5;
+}
+
+.fullscreen .mapContainer {
+  border-radius: 0;
+}
+
+.layersPanel {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  width: min(360px, calc(100% - 36px));
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(119, 137, 162, 0.36);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 42px rgba(22, 31, 47, 0.18);
+  padding: 12px;
+  backdrop-filter: blur(14px);
+}
+
+.layersHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.layersHeader label {
+  color: #172033;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.layersHeader strong {
+  color: #657184;
+  font-size: 12px;
+  font-weight: 780;
+  white-space: nowrap;
+}
+
+.routeSelect {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172033;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 760;
+  padding: 0 38px 0 12px;
+  cursor: pointer;
+}
+
+.routeDescription {
+  color: #657184;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.mapState {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #f8fafc;
+  color: #657184;
+  font-size: 14px;
+  line-height: 1.45;
+  padding: 18px;
+  text-align: center;
+}
+
+.fullscreen .mapState {
+  background: rgba(248, 250, 252, 0.92);
+}
+
+.tooltip {
+  position: absolute;
+  top: var(--tooltip-y, 24px);
+  left: var(--tooltip-x, 24px);
+  width: min(380px, calc(100% - 48px));
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(98, 120, 152, 0.38);
+  border-radius: 8px;
+  background: rgba(11, 18, 31, 0.92);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.34);
+  color: #eef5ff;
+  padding: 12px;
+  z-index: 2;
+  backdrop-filter: blur(16px);
+}
+
+.tooltipImage {
+  position: relative;
+  min-height: 150px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(55, 91, 155, 0.7), rgba(18, 28, 48, 0.9)),
+    radial-gradient(circle at 70% 30%, rgba(92, 206, 126, 0.45), transparent 32%);
+}
+
+.imagePreview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.9;
+}
+
+.imageFallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  color: rgba(238, 245, 255, 0.78);
+  font-size: 18px;
+  font-weight: 780;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.rankBadge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: #ef3e4a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 850;
+  padding: 5px 10px;
+  box-shadow: 0 8px 20px rgba(239, 62, 74, 0.28);
+}
+
+.tooltipHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.tooltipHeader p {
+  color: #8fa2bd;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.tooltipHeader address {
+  margin-top: 6px;
+  color: #9aabc2;
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.tooltipHeader h2 {
+  margin-top: 4px;
+  padding-right: 4px;
+  color: #ffffff;
+  font-size: 21px;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.trendBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 5px 9px;
+  white-space: nowrap;
+}
+
+.trendUp {
+  background: rgba(43, 211, 105, 0.14);
+  color: #52e47e;
+}
+
+.trendDown {
+  background: rgba(239, 62, 74, 0.14);
+  color: #ff6872;
+}
+
+.trendSame {
+  background: rgba(250, 193, 61, 0.14);
+  color: #ffd66d;
+}
+
+.popularityBlock {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(98, 120, 152, 0.26);
+  border-radius: 8px;
+  background: rgba(20, 32, 52, 0.72);
+  padding: 12px;
+}
+
+.popularityHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.popularityHeader span {
+  color: #9aabc2;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.popularityHeader strong {
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.progressTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(98, 120, 152, 0.3);
+}
+
+.progressValue {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #26c96f, #f5c84b, #ef3e4a);
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.metricGrid div {
+  min-height: 68px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  border: 1px solid rgba(98, 120, 152, 0.22);
+  border-radius: 8px;
+  background: rgba(18, 28, 46, 0.66);
+  padding: 10px;
+}
+
+.metricGrid dt {
+  color: #8799b1;
+  font-size: 11px;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.metricGrid dd {
+  color: #f4f8ff;
+  font-size: 15px;
+  font-weight: 780;
+  line-height: 1.25;
+}
+
+.tooltipFooter {
+  border-top: 1px solid rgba(98, 120, 152, 0.22);
+  color: #8fa2bd;
+  font-size: 12px;
+  line-height: 1.4;
+  padding-top: 2px;
+}
+
+.tooltipClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(9, 14, 24, 0.76);
+  color: #d8e3f2;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .layersPanel {
+    top: 12px;
+    left: 12px;
+    width: calc(100% - 24px);
+    max-height: 42dvh;
+    overflow: auto;
+  }
+
+  .tooltip {
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+    max-height: calc(100dvh - 24px);
+    overflow: auto;
+  }
+
+  .tooltipImage {
+    min-height: 118px;
+  }
+
+  .metricGrid {
+    grid-template-columns: 1fr;
+  }
+}
